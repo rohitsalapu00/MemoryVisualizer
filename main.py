@@ -1,27 +1,23 @@
-print("Memory Management Visualizer Project")
 
-#Physical memory frames(example: 4 frames)
-NUM_FRAMES = 4
-physical_memory = [None] * NUM_FRAMES #None means empty frame
-
-#page table for a single process (pid = 1)
-page_table ={} #page_number -> frame_index
-
-# Counters
-page_faults = 0
-hits = 0
+def reset_memory(num_frames):
+    #Reset memory and counters before a simulation run
+    physical_memory = [None] * num_frames
+    page_table = {}
+    page_faults = 0
+    hits = 0
+    page_usage_order = []
+    fifo_index = 0
+    return physical_memory, page_table, page_faults, hits, page_usage_order, fifo_index
 
 #replacement algorithm: FIFO or LRU
-replacement_algo = "FIFO" #Change to "LRU" to test LRU
-def access_page(page_number):
-    global page_faults, hits
-    global page_usage_order
+def access_page(page_number, algo, physical_memory, page_table,page_usage_order, page_faults, hits, fifo_index):
+    #Simulates accessing a page using FIFO or LRU algorithm
+    num_frames = len(physical_memory)
 
     if page_number in page_table:
         #Page is in memory -> HIT
-        hits += 1
-        print(f"Page {page_number} -> HIT in frame {page_table[page_number]}") 
-        if replacement_algo == "LRU":
+        hits += 1 
+        if algo == "LRU":
             #Move page to end to mark it as most recently used
             page_usage_order.remove(page_number)
             page_usage_order.append(page_number)
@@ -33,54 +29,24 @@ def access_page(page_number):
             free_index = physical_memory.index(None)
         except ValueError:
             #No free frame -> replace first one (FIFO simple)
-            if replacement_algo == "FIFO":
-                free_index = 0
+            if algo == "FIFO":
+                free_index = fifo_index
                 replaced_page = physical_memory[free_index]
-            elif replacement_algo == "LRU":
+                fifo_index = (fifo_index + 1) % num_frames
+            elif algo == "LRU":
                 #Replace least recently used page
                 lru_page = page_usage_order.pop(0)
                 free_index = page_table[lru_page]
                 replaced_page = lru_page
-            print(f"Memory full !! Replacing page {replaced_page} from frame {free_index}")
             del page_table[replaced_page]
+
         
         #Load new page
         physical_memory[free_index] = page_number
         page_table[page_number] = free_index
-        print(f"Page {page_number} loaded into frame {free_index}")
 
     #Update LRU usage order
-    if replacement_algo == "LRU":
-        if page_number not in page_usage_order:
+    if algo == "LRU" and page_number not in page_usage_order:
             page_usage_order.append(page_number)
 
-    print("Current Memory: ",physical_memory)
-    print("Page Table: ",page_table)
-    print(f"Page Faults: {page_faults}, Hits: {hits}\n")
-
-access_sequence = [1, 2, 3, 1, 4, 5]
-for page in access_sequence:
-    access_page(page)
-
-#Test FIFO
-replacement_algo = "FIFO"
-physical_memory = [None] * NUM_FRAMES
-page_table = {}
-page_faults = 0
-hits = 0
-page_usage_order = []
-print("----Testing FIFO----")
-for page in access_sequence:
-    access_page(page)
-
-
-#Test LRU
-replacement_algo = "LRU"
-physical_memory = [None] * NUM_FRAMES
-page_table = {}
-page_faults = 0
-hits = 0
-page_usage_order = []
-print("----Testing LRU----")
-for page in access_sequence:
-    access_page(page)
+    return physical_memory, page_table, page_faults, hits, page_usage_order, fifo_index
