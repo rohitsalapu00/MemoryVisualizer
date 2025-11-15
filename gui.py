@@ -117,11 +117,25 @@ lru_text.pack(anchor="w", padx=30, pady=(0,15))
 
 #start button
 
-start_btn = ttk.Button(
+def start_btn_enter(e):
+    start_btn.config(bg="")
+
+def start_btn_leave(e):
+    start_btn.config(bg="")
+
+start_btn = tk.Button(
     home_frame,
-    text = "start Simulation",
+    text="Start simulation",
+    bg=ACCENT_COLOR,
+    fg="white",
+    font=("Segoe UI semibold",12),
+    width=20,
+    relief="flat",
     command=lambda: show_simulation_page(),
 )
+
+start_btn.bind("<Enter>", start_btn_enter)
+start_btn.bind("<Leave>", start_btn_leave)
 
 start_btn.pack(pady=30)
 
@@ -157,7 +171,7 @@ algo_menu.grid(row=2, column=1, padx=10, pady=10)
 
 #hover effects
 
-def on_enter(e): e.widget.config(backgorund="#6ca0f7")
+def on_enter(e): e.widget.config(backgorund="#0A7CC0")
 def on_leave(e): e.widget.config(background=ACCENT_COLOR)
 
 #start simulation button
@@ -181,7 +195,7 @@ start_sim_btn.bind("<Leave>",on_leave)
 #back to home button 
 back_btn = tk.Button(
     sim_frame,
-    text = "<- Back To Home",
+    text = "Back",
     bg="#33384d",
     fg="white",
     font=("Segoe UI semibold",11),
