@@ -44,9 +44,9 @@ title_label.pack(pady=60)
 desc_label = tk.Label(
     home_frame,
     text=(
-        "Simulate and visualize how memory pages are replaced"
-        "using FIFO and LRU algorithms.\n\n"
-        "understand page faults, hits, and memory behavior interactively."
+        "Simulate and visualize how memory pages are replaced using FIFO and LRU algorithms.\n"
+        "Experience an interactive demonstration of page faults, page hits, and real-time changes in memory frames.\n\n"
+        "This tool helps you clearly understand how operating systems manage virtual memory and how different replacement strategies impact performance."
     ),
     font=("Segeo UI", 13),
     bg=BG_COLOR,
@@ -66,7 +66,7 @@ info_frame.pack(padx=80, pady=30, fill="x")
 
 fifo_label = tk.Label(
     info_frame,
-    text="Fifo (First In, First Out):",
+    text="FIFO (First In, First Out):",
     font=("Segoe UI semibold",13),
     bg=CARD_BG,
     fg=ACCENT_COLOR,
@@ -77,9 +77,10 @@ fifo_label.pack(anchor="w",padx=15, pady=(10,0))
 
 fifo_text = tk.Label(
     info_frame,
-    text=". The oldest loaded page is replaced first.\n"
-    ". Works like a queue - first page is the first to be removed.\n"
-    ". simple but may cause more page faults (Belady's anomaly).",
+    text=
+    "\n● The Oldest loaded page is replaced first.\n\n"
+    "● Works like a queue - first page is the first to be removed.\n\n"
+    "● Simple but may cause more page faults (Belady's anomaly).",
 
     font=("Segoe UI",11),
     bg=CARD_BG,
@@ -103,9 +104,9 @@ lru_label.pack(anchor="w",padx=15, pady=(5,0))
 
 lru_text = tk.Label(
     info_frame,
-    text=". Replaces the page that has been used for the longest time.\n"
-        ". keeps track of recently accessed pages.\n"
-        ". more efficient than FIFO is most real systems.",
+    text="\n● Replaces the page that has been used for the longest time.\n\n"
+        "● Keeps track of recently accessed pages.\n\n"
+        "● More efficient than FIFO is most real systems.",
     font=("Segoe UI",11),
     bg=CARD_BG,
     fg="#cccccc",
